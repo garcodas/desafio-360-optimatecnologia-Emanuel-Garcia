@@ -2,47 +2,37 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../../../config/database";
 import dayjs from "dayjs";
 
-export class Client extends Model {
+export class ProductCategory extends Model {
   Id?: number;
-  CompanyName?: string;
-  TradeName?: string;
-  DeliveryAddress!: string;
-  Phone!: string;
-  Email!: string;
+  Name!: string;
+  UserId!: number;
+  StatusId!: number;
   CreatedAt!: string;
   ModifiedAt?: string;
 }
 
-Client.init(
+ProductCategory.init(
   {
     Id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    CompanyName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    TradeName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    DeliveryAddress: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Phone: {
-      type: DataTypes.STRING,
+    UserId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    Email: {
-      type: DataTypes.STRING,
+    StatusId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     CreatedAt: {
       type: DataTypes.STRING,
-      defaultValue: dayjs().format("YYYY-MM-DD"),
+      defaultValue: dayjs().toDate().toISOString(),
     },
     ModifiedAt: {
       type: DataTypes.STRING,
@@ -51,8 +41,8 @@ Client.init(
   },
   {
     sequelize,
-    modelName: "Client",
-    tableName: "Client",
+    modelName: "ProductCategory",
+    tableName: "ProductCategory",
     timestamps: false,
   }
 );

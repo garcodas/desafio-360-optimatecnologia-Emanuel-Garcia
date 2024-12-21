@@ -11,8 +11,8 @@ GO
 
 CREATE TABLE [dbo].[Client](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CompanyName] [varchar](245) NOT NULL,
-	[TradeName] [varchar](245) NOT NULL,
+	[CompanyName] [varchar](245) NULL,
+	[TradeName] [varchar](245) NULL,
 	[DeliveryAddress] [varchar](345) NOT NULL,
 	[Phone] [varchar](45) NOT NULL,
 	[Email] [varchar](45) NOT NULL,
@@ -109,6 +109,39 @@ GO
 ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Status]
 GO
 -- --------USER TABLE--------
+-- --------USER SESSION--------
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+/****** Object:  Table [dbo].[UserSession]    Script Date: 12/20/2024 9:16:31 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[UserSession](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Token] [varchar](max) NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ExpiresAt] [datetime] NOT NULL,
+	[CreatedAt] [datetime] NOT NULL,
+ CONSTRAINT [PK_UserSession] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[UserSession]  WITH CHECK ADD  CONSTRAINT [FK_UserSession_User] FOREIGN KEY([UserId])
+REFERENCES [dbo].[User] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserSession] CHECK CONSTRAINT [FK_UserSession_User]
+GO
+
+
+-- --------USER SESSION--------
 -- --------PRODUCTCATEGORY TABLE--------
 USE [GDA0011_OT_Emanuel_Garcia]
 GO
@@ -247,8 +280,8 @@ GO
 -- --------CLIENT--------
 -- Insert Client
 CREATE PROCEDURE InsertClient
-    @CompanyName VARCHAR(245),
-    @TradeName VARCHAR(245),
+	@CompanyName VARCHAR(245) = NULL,
+    @TradeName VARCHAR(245) = NULL,
     @DeliveryAddress VARCHAR(345),
     @Phone VARCHAR(45),
     @Email VARCHAR(45)
@@ -262,8 +295,8 @@ GO
 -- Update Client
 CREATE PROCEDURE UpdateClient
     @Id INT,
-    @CompanyName VARCHAR(245),
-    @TradeName VARCHAR(245),
+    @CompanyName VARCHAR(245) = NULL,
+    @TradeName VARCHAR(245) = NULL,
     @DeliveryAddress VARCHAR(345),
     @Phone VARCHAR(45),
     @Email VARCHAR(45)
@@ -641,3 +674,58 @@ ORDER BY TotalQuantitySold ASC;
 GO
 
 -- --------VIEWS--------
+-- --------DATA--------
+-- --------ROLES--------
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+INSERT INTO [dbo].[Role]
+           ([Name]
+           ,[CreatedAt]
+           ,[ModifiedAt])
+     VALUES
+           ('Admin'
+           ,GETDATE()
+           ,NULL)
+GO
+
+INSERT INTO [dbo].[Role]
+           ([Name]
+           ,[CreatedAt]
+           ,[ModifiedAt])
+     VALUES
+           ('Client'
+           ,GETDATE()
+           ,NULL)
+GO
+-- --------ROLES--------
+
+-- --------STATUS--------
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+INSERT INTO [dbo].[Status]
+           ([Name]
+           ,[CreatedAt]
+           ,[ModifiedAt])
+     VALUES
+           ('Active'
+           ,GETDATE()
+           ,NULL)
+GO
+
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+INSERT INTO [dbo].[Status]
+           ([Name]
+           ,[CreatedAt]
+           ,[ModifiedAt])
+     VALUES
+           ('Inactive'
+           ,GETDATE()
+           ,NULL)
+GO
+
+-- --------STATUS--------
+-- --------DATA--------

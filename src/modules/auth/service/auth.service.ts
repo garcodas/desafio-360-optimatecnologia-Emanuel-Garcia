@@ -1,16 +1,18 @@
 import * as bcrypt from "bcrypt";
-import { CreateClientDto } from "../../client/dto/create-client-dto";
+import { CreateClientDto } from "../../client/dto/create-client.dto";
 import ClientService from "../../client/service/client.service";
 import { RoleService } from "../../role/service/role.service";
-import { RegisterUserDto } from "../dto/register-user-dto";
+import { RegisterUserDto } from "../dto/register-user.dto";
 import { User } from "../../user/model/user.model";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import { envs } from "../../../config/envs";
+import UserSessionService from "../../userSession/service/user-session.service";
 
 export class AuthService {
   private clientService = new ClientService();
   private roleService = new RoleService();
+  private userSessionService = new UserSessionService();
 
   async registerUser(registerUserDto: RegisterUserDto) {
     try {
@@ -78,6 +80,12 @@ export class AuthService {
           expiresIn: envs.JWT_EXPIRES_IN,
         }
       );
+
+      await this.userSessionService.createUserSession({
+        Token: token,
+        UserId: user.Id ?? 0,
+        ExpiresAt: dayjs().add(1, "day").toDate().toISOString(),
+      });
 
       return {
         token,

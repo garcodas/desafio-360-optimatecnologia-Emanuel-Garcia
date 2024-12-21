@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { envs } from "../config/envs";
 import passport from "passport";
 import { User } from "../modules/user/model/user.model";
+import { UserSession } from "../modules/userSession/model/user-session.model";
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -15,6 +16,21 @@ passport.use(
       if (user) {
         return done(null, user);
       }
+
+      const userSession = await UserSession.findOne({
+        where: {
+          Token: payload.token,
+        },
+      });
+
+      if (userSession) {
+        if (userSession.ExpiresAt < new Date()) {
+          return done(new Error("Unauthorized"), false);
+        } else {
+          return done(null, user);
+        }
+      }
+
       return done(null, false);
     } catch (error) {
       return done(error, false);

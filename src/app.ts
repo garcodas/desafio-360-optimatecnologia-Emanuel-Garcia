@@ -6,6 +6,7 @@ import { envs } from "./config/envs";
 import mainRouter from "./routes";
 import { passportMiddleware } from "./middlewares/passport.middleware";
 import passport from "passport";
+import dayjs from "dayjs";
 
 const app = express();
 
