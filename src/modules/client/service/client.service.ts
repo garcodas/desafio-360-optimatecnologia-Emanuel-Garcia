@@ -41,6 +41,19 @@ class ClientService {
     }
   }
 
+  async getClientByName(name: string): Promise<Client | null> {
+    try {
+      const client = await Client.findOne({
+        where: {
+          CompanyName: name,
+        },
+      });
+      return client;
+    } catch (error: any) {
+      throw new Error("Error getting client by id" + error.message);
+    }
+  }
+
   async updateClient(id: number, clientDto: UpdateClientDto): Promise<Client> {
     try {
       const client = await Client.findByPk(id);
@@ -53,7 +66,7 @@ class ClientService {
         clientDto.DeliveryAddress ?? client.DeliveryAddress;
       client.Phone = clientDto.Phone ?? client.Phone;
       client.Email = clientDto.Email ?? client.Email;
-      client.ModifiedAt = dayjs().toDate().toISOString();
+      client.ModifiedAt = dayjs().toDate();
       await client.save();
       return client;
     } catch (error: any) {

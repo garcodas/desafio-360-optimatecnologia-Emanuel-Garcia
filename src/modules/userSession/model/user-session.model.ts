@@ -30,8 +30,9 @@ UserSession.init(
       allowNull: false,
     },
     CreatedAt: {
-      type: DataTypes.STRING,
-      defaultValue: dayjs().toDate().toISOString(),
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
   },
   {
@@ -39,5 +40,6 @@ UserSession.init(
     modelName: "UserSession",
     tableName: "UserSession",
     timestamps: false,
+    createdAt: "CreatedAt",
   }
 );

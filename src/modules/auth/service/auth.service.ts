@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import { envs } from "../../../config/envs";
 import UserSessionService from "../../userSession/service/user-session.service";
+import { UpdateUserDto } from "../dto/update-user.dto";
 
 export class AuthService {
   private clientService = new ClientService();
@@ -16,6 +17,15 @@ export class AuthService {
 
   async registerUser(registerUserDto: RegisterUserDto) {
     try {
+      const existingUser = await User.findOne({
+        where: {
+          Email: registerUserDto.Email,
+        },
+      });
+
+      if (existingUser) {
+        throw new Error("Ya existe un usuario con estas credenciales");
+      }
       const nclient: CreateClientDto = {
         CompanyName: registerUserDto.CompanyName,
         TradeName: registerUserDto.TradeName,
@@ -40,6 +50,53 @@ export class AuthService {
         ClientId: client.Id,
         RoleId: role.Id,
         StatusId: 1,
+        CreatedAt: dayjs().format("YYYY-MM-DD"),
+      });
+
+      return {
+        FullName: newUser.FullName,
+        Email: newUser.Email,
+        Phone: newUser.Phone,
+        BirthDate: dayjs(newUser.BirthDate).add(1, "day").format("YYYY-MM-DD"),
+      };
+    } catch (error: any) {
+      throw new Error("Error saving user" + error.message);
+    }
+  }
+
+  async registerAdminUser(registerUserDto: RegisterUserDto) {
+    try {
+      const existingUser = await User.findOne({
+        where: {
+          Email: registerUserDto.Email,
+        },
+      });
+
+      if (existingUser) {
+        throw new Error("Ya existe un usuario con estas credenciales");
+      }
+
+      const client = await this.clientService.getClientByName("Admin");
+      const role = await this.roleService.getRoleByName("client");
+
+      if (!client) {
+        throw new Error("No existe un cliente Admin");
+      }
+
+      if (!role) {
+        throw new Error("Ocurrio un error al buscar el rol");
+      }
+
+      const newUser = await User.create({
+        Phone: registerUserDto.Phone,
+        FullName: registerUserDto.FullName,
+        PasswordHash: await bcrypt.hash(registerUserDto.Password, 10),
+        Email: registerUserDto.Email,
+        BirthDate: registerUserDto.BirthDate,
+        ClientId: client.Id,
+        RoleId: role.Id,
+        StatusId: 1,
+        CreatedAt: dayjs().format("YYYY-MM-DD"),
       });
 
       return {
@@ -61,7 +118,7 @@ export class AuthService {
         },
       });
 
-      if (!user) {
+      if (!user || user.StatusId === 2) {
         throw new Error("Usuario o contraseña incorrectos");
       }
 
@@ -98,6 +155,110 @@ export class AuthService {
       };
     } catch (error: any) {
       throw new Error("Error loging user" + error.message);
+    }
+  }
+
+  async logout(token: string) {
+    try {
+      await this.userSessionService.deleteUserSession(token);
+    } catch (error: any) {
+      throw new Error("Error loging out user" + error.message);
+    }
+  }
+
+  async getUserByToken(token: string) {
+    try {
+      const userSession = await this.userSessionService.getUserSessionByToken(
+        token
+      );
+
+      if (!userSession) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      const user = await User.findByPk(userSession.UserId);
+
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      return {
+        FullName: user.FullName,
+        Email: user.Email,
+        Phone: user.Phone,
+        BirthDate: dayjs(user.BirthDate).add(1, "day").format("YYYY-MM-DD"),
+      };
+    } catch (error: any) {
+      throw new Error("Error getting user" + error.message);
+    }
+  }
+
+  async getUserById(id: number) {
+    try {
+      const user = await User.findByPk(id);
+
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      return {
+        FullName: user.FullName,
+        Email: user.Email,
+        Phone: user.Phone,
+        BirthDate: dayjs(user.BirthDate).add(1, "day").format("YYYY-MM-DD"),
+      };
+    } catch (error: any) {
+      throw new Error("Error getting user" + error.message);
+    }
+  }
+
+  async updateUser(id: number, userDTO: UpdateUserDto) {
+    try {
+      const user = await User.findByPk(id);
+
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      await User.update(
+        {
+          FullName: userDTO.FullName ?? user.FullName,
+          Phone: userDTO.Phone ?? user.Phone,
+          BirthDate: userDTO.BirthDate ?? user.BirthDate,
+          PasswordHash: userDTO.Password
+            ? await bcrypt.hash(userDTO.Password, 10)
+            : user.PasswordHash,
+          ModifiedAt: new Date(),
+        },
+        {
+          where: {
+            Id: id,
+          },
+        }
+      );
+
+      return await User.findByPk(id);
+    } catch (error: any) {
+      throw new Error("Error updating user" + error.message);
+    }
+  }
+
+  async deleteUser(id: number) {
+    try {
+      await User.update(
+        {
+          StatusId: 2,
+        },
+        {
+          where: {
+            Id: id,
+          },
+        }
+      );
+
+      return true;
+    } catch (error: any) {
+      throw new Error("Error deleting user" + error.message);
     }
   }
 }

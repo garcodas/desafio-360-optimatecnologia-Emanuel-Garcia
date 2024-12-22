@@ -62,7 +62,7 @@ class ProductService {
         product.Price = ProductDto.Price ?? product.Price;
         product.ImageUrl = ProductDto.ImageUrl ?? product.ImageUrl;
         product.StatusId = ProductDto.StatusId ?? product.StatusId;
-        product.ModifiedAt = dayjs().toDate().toISOString();
+        product.ModifiedAt = dayjs().toDate();
         await product.save();
       }
       return product;

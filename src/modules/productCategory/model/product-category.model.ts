@@ -7,8 +7,8 @@ export class ProductCategory extends Model {
   Name!: string;
   UserId!: number;
   StatusId!: number;
-  CreatedAt!: string;
-  ModifiedAt?: string;
+  CreatedAt!: Date;
+  ModifiedAt?: Date;
 }
 
 ProductCategory.init(
@@ -31,12 +31,15 @@ ProductCategory.init(
       allowNull: false,
     },
     CreatedAt: {
-      type: DataTypes.STRING,
-      defaultValue: dayjs().toDate().toISOString(),
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
     ModifiedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATEONLY,
       allowNull: true,
+
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
   },
   {
@@ -44,5 +47,7 @@ ProductCategory.init(
     modelName: "ProductCategory",
     tableName: "ProductCategory",
     timestamps: false,
+    createdAt: "CreatedAt",
+    updatedAt: "ModifiedAt",
   }
 );

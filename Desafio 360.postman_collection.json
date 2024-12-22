@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "92a388c4-d0d0-42d5-b68e-09857ef80db6",
     "name": "Desafio 360",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
     "_exporter_id": "14526944",
     "_collection_link": "https://warped-spaceship-78489.postman.co/workspace/My-Workspace~daa2d084-8927-42fb-8b7b-c8e38d9f44ef/collection/14526944-92a388c4-d0d0-42d5-b68e-09857ef80db6?action=share&source=collection_link&creator=14526944"
   },
@@ -17,20 +17,29 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"FullName\": \"Emanuel Alejandro Garcia Rodas\",\r\n    \"Password\": \"Koctel+2020\",\r\n    \"BirthDate\": \"2000-12-01\",\r\n    \"DeliveryAddress\": \"La Brigada\",\r\n    \"Phone\": \"30851904\",\r\n    \"Email\": \"emanuelgarciaaleli@hotmail.com\"\r\n}",
+              "raw": "{\r\n    \"FullName\": \"Juanito Perez\",\r\n    \"Password\": \"Tortuga+2020\",\r\n    \"BirthDate\": \"1999-11-01\",\r\n    \"DeliveryAddress\": \"Colonia El mirador\",\r\n    \"Phone\": \"41962813\",\r\n    \"Email\": \"example1@hotmail.com\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/auth/signup",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "auth", "signup"]
-            }
+            "url": "http://localhost:3000/api/auth/signup"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJlZ2FyY2lhcjEwMTFAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDc4NDgsImV4cCI6MTczNDg1MTQ0OH0.ufmqbKopwadA_N6fl2EAuQ1SSyJy6YACux3-J94Cwaw",
+                "type": "text"
+              }
+            ],
+            "url": "http://localhost:3000/api/auth/3"
           },
           "response": []
         },
@@ -41,20 +50,44 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"examploe@hotmail.com\",\r\n    \"password\": \"Example+2021\"\r\n}",
+              "raw": "{\r\n    \"email\": \"example@hotmail.com\",\r\n    \"password\": \"Tortuga+2019\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/auth/signin",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "auth", "signin"]
-            }
+            "url": "http://localhost:3000/api/auth/signin"
+          },
+          "response": []
+        },
+        {
+          "name": "Signout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJlZ2FyY2lhcjEwMTFAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDc1MjgsImV4cCI6MTczNDg1MTEyOH0.1BYAsVW4yfInrotOQEzvEpn6D0VmGfUY9rM-yzTaWTU",
+                "type": "text"
+              }
+            ],
+            "url": "http://localhost:3000/api/auth/signout"
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJlZ2FyY2lhcjEwMTFAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDc4NDgsImV4cCI6MTczNDg1MTQ0OH0.ufmqbKopwadA_N6fl2EAuQ1SSyJy6YACux3-J94Cwaw",
+                "type": "text"
+              }
+            ],
+            "url": "http://localhost:3000/api/auth/me"
           },
           "response": []
         },
@@ -69,13 +102,40 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "http://localhost:3000/api/healthz",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "healthz"]
-            }
+            "url": "http://localhost:3000/api/healthz"
+          },
+          "response": []
+        },
+        {
+          "name": "AdminSignup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"FullName\": \"Ema\",\r\n    \"Password\": \"Tortuga+2020\",\r\n    \"BirthDate\":\"2020-12-01\",\r\n    \"Phone\": \"41962813\",\r\n    \"Email\": \"example@hotmail.com\",\r\n    \"DeliveryAddress\": \"La Brigada\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/auth/signup/admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Copy",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJlZ2FyY2lhcjEwMTFAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDc4NDgsImV4cCI6MTczNDg1MTQ0OH0.ufmqbKopwadA_N6fl2EAuQ1SSyJy6YACux3-J94Cwaw",
+                "type": "text"
+              }
+            ],
+            "url": "http://localhost:3000/api/auth/inactive/3"
           },
           "response": []
         }
@@ -88,7 +148,13 @@
           "name": "Create Category Product",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDM1NzMsImV4cCI6MTczNDg0NzE3M30.WNG2dNz8sQfi3CS1iKJMtuekCZB8T5QuJNu2PeiEekE",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n    \"Name\": \"Tecnología\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
@@ -98,13 +164,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product-category",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product-category"]
-            }
+            "url": "http://localhost:3000/api/product-category"
           },
           "response": []
         },
@@ -125,13 +185,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product-category",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product-category"]
-            }
+            "url": "http://localhost:3000/api/product-category"
           },
           "response": []
         },
@@ -152,13 +206,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product-category/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product-category", "2"]
-            }
+            "url": "http://localhost:3000/api/product-category/2"
           },
           "response": []
         },
@@ -176,13 +224,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product-category/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product-category", "2"]
-            }
+            "url": "http://localhost:3000/api/product-category/2"
           },
           "response": []
         },
@@ -200,13 +242,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product-category/3",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product-category", "3"]
-            }
+            "url": "http://localhost:3000/api/product-category/3"
           },
           "response": []
         }
@@ -222,53 +258,35 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ3Njc0MTksImV4cCI6MTczNDc3MTAxOX0.38tiKPIcFC_hF2Yxuod2ZZeINOvxuWu2D75D8n3Pw88",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDM1NzMsImV4cCI6MTczNDg0NzE3M30.WNG2dNz8sQfi3CS1iKJMtuekCZB8T5QuJNu2PeiEekE",
                 "type": "text"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"Name\": \"Example\"\r\n}",
+              "raw": "{\r\n    \"Name\": \"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/status",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "status"]
-            }
+            "url": "http://localhost:3000/api/status"
           },
           "response": []
         },
         {
           "name": "Get Statuses",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"Name\": \"Tecnología\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDM1NzMsImV4cCI6MTczNDg0NzE3M30.WNG2dNz8sQfi3CS1iKJMtuekCZB8T5QuJNu2PeiEekE",
+                "type": "text"
               }
-            },
-            "url": {
-              "raw": "http://localhost:3000/api/status",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "status"]
-            }
+            ],
+            "url": "http://localhost:3000/api/status"
           },
           "response": []
         },
@@ -289,13 +307,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/status/3",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "status", "3"]
-            }
+            "url": "http://localhost:3000/api/status/3"
           },
           "response": []
         },
@@ -313,13 +325,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/status/4",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "status", "4"]
-            }
+            "url": "http://localhost:3000/api/status/4"
           },
           "response": []
         },
@@ -337,13 +343,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/status/3",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "status", "3"]
-            }
+            "url": "http://localhost:3000/api/status/3"
           },
           "response": []
         }
@@ -365,20 +365,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"CompanyName\": \"Example\",\r\n    \"TradeName\": \"Example\",\r\n    \"DeliveryAddress\": \"Example\",\r\n    \"Phone\": \"54112928\",\r\n    \"Email\": \"emaunuelito-garcia2000@hotmail.com\"\r\n}",
+              "raw": "{\r\n    \"CompanyName\": \"Example\",\r\n    \"TradeName\": \"Example\",\r\n    \"DeliveryAddress\": \"Example\",\r\n    \"Phone\": \"41962813\",\r\n    \"Email\": \"example3@hotmail.com\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/client",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "client"]
-            }
+            "url": "http://localhost:3000/api/client"
           },
           "response": []
         },
@@ -405,13 +399,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/client",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "client"]
-            }
+            "url": "http://localhost:3000/api/client"
           },
           "response": []
         },
@@ -438,13 +426,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/client/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "client", "2"]
-            }
+            "url": "http://localhost:3000/api/client/2"
           },
           "response": []
         },
@@ -468,13 +450,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/client/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "client", "2"]
-            }
+            "url": "http://localhost:3000/api/client/2"
           },
           "response": []
         },
@@ -498,13 +474,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/client/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "client", "2"]
-            }
+            "url": "http://localhost:3000/api/client/2"
           },
           "response": []
         }
@@ -517,7 +487,13 @@
           "name": "Create Product",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDM1NzMsImV4cCI6MTczNDg0NzE3M30.WNG2dNz8sQfi3CS1iKJMtuekCZB8T5QuJNu2PeiEekE",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n    \"Name\": \"Computadora\",\r\n    \"Brand\": \"HP\",\r\n    \"Barcode\": \"123456789\",\r\n    \"Stock\": 12,\r\n    \"Price\": 1235.50,\r\n    \"ImageUrl\": \"https://tiendaenlinea.claro.com.gt/cdn/I05.4813.071/I05.4813.071_3_312x400.jpg?2024-06-05T233546\",\r\n    \"ProductCategoryId\": 1,\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
@@ -527,13 +503,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product"]
-            }
+            "url": "http://localhost:3000/api/product"
           },
           "response": []
         },
@@ -544,7 +514,14 @@
           },
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJlZ2FyY2lhcjEwMTFAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDc1MjgsImV4cCI6MTczNDg1MTEyOH0.1BYAsVW4yfInrotOQEzvEpn6D0VmGfUY9rM-yzTaWTU",
+                "type": "text",
+                "disabled": true
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n    \"Name\": \"Tecnología\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
@@ -554,13 +531,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product"]
-            }
+            "url": "http://localhost:3000/api/product"
           },
           "response": []
         },
@@ -581,13 +552,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product", "2"]
-            }
+            "url": "http://localhost:3000/api/product/2"
           },
           "response": []
         },
@@ -605,13 +570,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product", "2"]
-            }
+            "url": "http://localhost:3000/api/product/2"
           },
           "response": []
         },
@@ -629,13 +588,129 @@
                 }
               }
             },
-            "url": {
-              "raw": "http://localhost:3000/api/product/2",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "product", "2"]
-            }
+            "url": "http://localhost:3000/api/product/2"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDUyNDksImV4cCI6MTczNDg0ODg0OX0.in6fwZFVaoFe4JXU5J3PxPwzNyDfEpPqjhptbsevfMY",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"FullName\":\"Juanito Perez\",\r\n    \"Address\": \"Colonia El mirador\",\r\n    \"Email\": \"example1@hotmail.com\",\r\n    \"Phone\": \"41962813\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1,\r\n    \"Products\": [\r\n        {\r\n            \"Qty\": 9.99,\r\n            \"UnitPrice\": 5.55,\r\n            \"SubTotal\": 55.45,\r\n            \"ProductId\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDUyNDksImV4cCI6MTczNDg0ODg0OX0.in6fwZFVaoFe4JXU5J3PxPwzNyDfEpPqjhptbsevfMY",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"Tecnología\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDUyNDksImV4cCI6MTczNDg0ODg0OX0.in6fwZFVaoFe4JXU5J3PxPwzNyDfEpPqjhptbsevfMY",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"Tecnología\",\r\n    \"UserId\": 1,\r\n    \"StatusId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/order/6"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDU1NTgsImV4cCI6MTczNDg0OTE1OH0.pC3zRMUCdP-qI-zGM2h7vmfwSM392bs1JU0KlaCwKA8",
+                "type": "text"
+              }
+            ],
+            "url": "http://localhost:3000/api/order/6"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFudWVsZ2FyY2lhYWxlbGlAaG90bWFpbC5jb20iLCJpYXQiOjE3MzQ4NDU1NTgsImV4cCI6MTczNDg0OTE1OH0.pC3zRMUCdP-qI-zGM2h7vmfwSM392bs1JU0KlaCwKA8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"FullName\": \"Computadora 2\",\r\n    \"DeliveryDate\": \"2024-12-26\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/order/6"
           },
           "response": []
         }

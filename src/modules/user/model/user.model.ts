@@ -32,7 +32,7 @@ User.init(
       allowNull: false,
     },
     BirthDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     Email: {
@@ -56,11 +56,11 @@ User.init(
       allowNull: false,
     },
     CreatedAt: {
-      type: DataTypes.STRING,
-      defaultValue: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      type: DataTypes.DATEONLY,
+      allowNull: false,
     },
     ModifiedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATEONLY,
       allowNull: true,
     },
   },

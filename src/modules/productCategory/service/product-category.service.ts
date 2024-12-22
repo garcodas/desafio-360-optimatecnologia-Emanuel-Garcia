@@ -54,7 +54,7 @@ class ProductCategoryService {
         productCategory.Name = productCategoryDto.Name ?? productCategory.Name;
         productCategory.StatusId =
           productCategoryDto.StatusId ?? productCategory.StatusId;
-        productCategory.ModifiedAt = dayjs().toDate().toISOString();
+        productCategory.ModifiedAt = dayjs().toDate();
         await productCategory.save();
       }
       return productCategory;

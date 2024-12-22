@@ -19,7 +19,7 @@ passport.use(
 
       const userSession = await UserSession.findOne({
         where: {
-          Token: payload.token,
+          UserId: payload.token,
         },
       });
 

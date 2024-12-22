@@ -4,6 +4,7 @@ import categoryProductRouter from "./product-category.route";
 import productRouter from "./product.route";
 import statusRouter from "./status.route";
 import clientRouter from "./client.route";
+import orderRouter from "./order.route";
 
 const mainRouter = Router();
 
@@ -12,5 +13,6 @@ mainRouter.use("/product-category", categoryProductRouter);
 mainRouter.use("/product", productRouter);
 mainRouter.use("/status", statusRouter);
 mainRouter.use("/client", clientRouter);
+mainRouter.use("/order", orderRouter);
 
 export default mainRouter;

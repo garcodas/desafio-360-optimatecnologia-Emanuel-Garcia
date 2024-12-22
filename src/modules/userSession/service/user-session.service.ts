@@ -31,6 +31,19 @@ class UserSessionService {
       throw new Error("Error getting user session" + error.message);
     }
   }
+
+  async deleteUserSession(token: string): Promise<boolean> {
+    try {
+      await UserSession.destroy({
+        where: {
+          Token: token,
+        },
+      });
+      return true;
+    } catch (error: any) {
+      throw new Error("Error deleting user session" + error.message);
+    }
+  }
 }
 
 export default UserSessionService;

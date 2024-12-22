@@ -16,8 +16,8 @@ CREATE TABLE [dbo].[Client](
 	[DeliveryAddress] [varchar](345) NOT NULL,
 	[Phone] [varchar](45) NOT NULL,
 	[Email] [varchar](45) NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL ,
  CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -36,8 +36,8 @@ GO
 CREATE TABLE [dbo].[Role](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](45) NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -55,8 +55,8 @@ GO
 CREATE TABLE [dbo].[Status](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](45) NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -79,8 +79,8 @@ CREATE TABLE [dbo].[User](
 	[RoleId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
 	[ClientId] [int] NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -124,8 +124,8 @@ CREATE TABLE [dbo].[UserSession](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Token] [varchar](max) NOT NULL,
 	[UserId] [int] NOT NULL,
-	[ExpiresAt] [datetime] NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
+	[ExpiresAt] [date] NOT NULL,
+	[CreatedAt] [date] NOT NULL,
  CONSTRAINT [PK_UserSession] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -153,8 +153,8 @@ CREATE TABLE [dbo].[ProductCategory](
 	[Name] [varchar](45) NOT NULL,
 	[UserId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_ProductCategory] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -193,8 +193,8 @@ CREATE TABLE [dbo].[Product](
 	[ProductCategoryId] [int] NOT NULL,
 	[UserId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -215,10 +215,10 @@ CREATE TABLE [dbo].[Order](
 	[Address] [varchar](max) NOT NULL,
 	[Phone] [varchar](45) NOT NULL,
 	[Email] [varchar](45) NOT NULL,
-	[DeliveryDate] [datetime] NOT NULL,
+	[DeliveryDate] [date] NULL,
 	[Total] [float] NULL,
-	[CreatedAt] [datetime] NOT NULL,
-	[ModifiedAt] [datetime] NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
 	[UserId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
  CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED 
@@ -546,7 +546,7 @@ CREATE PROCEDURE InsertOrder
     @Address VARCHAR(MAX),
     @Phone VARCHAR(45),
     @Email VARCHAR(45),
-    @DeliveryDate DATETIME,
+    @DeliveryDate date,
     @Total FLOAT,
     @UserId INT,
     @StatusId INT
@@ -564,7 +564,7 @@ CREATE PROCEDURE UpdateOrder
     @Address VARCHAR(MAX),
     @Phone VARCHAR(45),
     @Email VARCHAR(45),
-    @DeliveryDate DATETIME,
+    @DeliveryDate date,
     @Total FLOAT,
     @UserId INT,
     @StatusId INT
@@ -728,4 +728,29 @@ INSERT INTO [dbo].[Status]
 GO
 
 -- --------STATUS--------
+-- --------CLIENT--------
+-- ADMIN CLIENT TO ADMIN USERS
+-- TECHNICAL DEBT: CHANGE RELATIONS, USER SHOULD NOT DEPENDS OF CLIENT (EMANUEL GARCIA)
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+INSERT INTO [dbo].[Client]
+           ([CompanyName]
+           ,[TradeName]
+           ,[DeliveryAddress]
+           ,[Phone]
+           ,[Email]
+           ,[CreatedAt]
+           ,[ModifiedAt])
+     VALUES
+           ('Admin'
+           ,'Admin'
+           ,'Admin'
+           ,'Admin'
+           ,'admin'
+           ,GETDATE()
+           ,null)
+GO
+-- --------CLIENT--------
+
 -- --------DATA--------

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../../../config/database";
+import dayjs from "dayjs";
 
 export class Role extends Model {
   Id?: number;
@@ -20,13 +21,16 @@ Role.init(
       allowNull: false,
     },
     CreatedAt: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
     ModifiedAt: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
+
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
   },
   {

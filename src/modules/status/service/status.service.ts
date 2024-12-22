@@ -48,7 +48,7 @@ class StatusService {
       });
       if (status) {
         status.Name = StatusDto.Name ?? status.Name;
-        status.ModifiedAt = dayjs().toDate().toISOString();
+        status.ModifiedAt = dayjs().toDate();
         await status.save();
       }
       return status;

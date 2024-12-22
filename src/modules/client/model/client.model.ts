@@ -9,8 +9,8 @@ export class Client extends Model {
   DeliveryAddress!: string;
   Phone!: string;
   Email!: string;
-  CreatedAt!: string;
-  ModifiedAt?: string;
+  CreatedAt!: Date;
+  ModifiedAt?: Date;
 }
 
 Client.init(
@@ -41,12 +41,14 @@ Client.init(
       allowNull: false,
     },
     CreatedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATEONLY,
+      allowNull: false,
       defaultValue: dayjs().format("YYYY-MM-DD"),
     },
     ModifiedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATEONLY,
       allowNull: true,
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
   },
   {
@@ -54,5 +56,7 @@ Client.init(
     modelName: "Client",
     tableName: "Client",
     timestamps: false,
+    createdAt: "CreatedAt",
+    updatedAt: "ModifiedAt",
   }
 );

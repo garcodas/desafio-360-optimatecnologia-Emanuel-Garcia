@@ -1,4 +1,5 @@
 import express from "express";
+import "reflect-metadata";
 import fs from "fs";
 import path from "path";
 import sequelize from "./config/database";

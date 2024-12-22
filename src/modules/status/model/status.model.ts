@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 export class Status extends Model {
   Id?: number;
   Name!: string;
-  CreatedAt!: string;
-  ModifiedAt?: string;
+  CreatedAt!: Date;
+  ModifiedAt?: Date;
 }
 
 Status.init(
@@ -22,12 +22,14 @@ Status.init(
     },
 
     CreatedAt: {
-      type: DataTypes.STRING,
-      defaultValue: dayjs().toDate().toISOString(),
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
     ModifiedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATEONLY,
       allowNull: true,
+      defaultValue: dayjs().format("YYYY-MM-DD"),
     },
   },
   {
@@ -35,5 +37,7 @@ Status.init(
     modelName: "Status",
     tableName: "Status",
     timestamps: false,
+    createdAt: "CreatedAt",
+    updatedAt: "ModifiedAt",
   }
 );
