@@ -145,8 +145,8 @@ export class AuthService {
       });
 
       return {
-        Token: token,
         User: {
+          Token: token,
           FullName: user.FullName,
           Email: user.Email,
           Phone: user.Phone,
