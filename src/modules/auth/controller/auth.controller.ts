@@ -20,8 +20,8 @@ export class AuthController {
 
   async login(req: Request, res: Response) {
     try {
-      const { email, password } = req.body;
-      const user = await this.authService.login(email, password);
+      const { Email, Password } = req.body;
+      const user = await this.authService.login(Email, Password);
       res.status(200).json({
         message: "User logged in successfully",
         data: user,

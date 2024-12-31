@@ -16,4 +16,27 @@ export class RoleService {
       throw new Error("Ocurrio un error al buscar el rol");
     }
   }
+  async getRoleById(roleId: number): Promise<RoleResponse | null> {
+    try {
+      const role = await Role.findOne({
+        where: {
+          Id: roleId,
+        },
+      });
+
+      return role;
+    } catch (error) {
+      throw new Error("Ocurrio un error al buscar el rol");
+    }
+  }
+
+  async getRoles(): Promise<RoleResponse[]> {
+    try {
+      const roles = await Role.findAll();
+
+      return roles;
+    } catch (error) {
+      throw new Error("Ocurrio un error al buscar los roles");
+    }
+  }
 }

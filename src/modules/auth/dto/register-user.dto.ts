@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsString } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { CreateClientDto } from "../../client/dto/create-client.dto";
 
 export class RegisterUserDto extends CreateClientDto {
@@ -13,4 +13,8 @@ export class RegisterUserDto extends CreateClientDto {
   @IsDateString()
   @IsNotEmpty()
   BirthDate!: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  RoleId!: number;
 }
