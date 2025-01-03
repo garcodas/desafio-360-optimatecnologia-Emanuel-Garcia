@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import { Status } from "../model/status.model";
 import { CreateStatusDto } from "../dto/create-status.dto";
 import { UpdateStatusDto } from "../dto/update-status.dto";
+import { Status } from "../model";
 class StatusService {
   async createStatus(StatusDto: CreateStatusDto): Promise<Status> {
     try {

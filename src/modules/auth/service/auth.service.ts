@@ -35,7 +35,7 @@ export class AuthService {
       };
 
       const client = await this.clientService.createClient(nclient);
-      const role = await this.roleService.getRoleById;
+      const role = await this.roleService.getRoleByName("Client");
 
       if (!role) {
         throw new Error("Ocurrio un error al buscar el rol");
@@ -48,7 +48,7 @@ export class AuthService {
         Email: registerUserDto.Email,
         BirthDate: registerUserDto.BirthDate,
         ClientId: client.Id,
-        RoleId: registerUserDto.RoleId,
+        RoleId: role.Id,
         StatusId: 1,
         CreatedAt: dayjs().format("YYYY-MM-DD"),
       });
@@ -77,7 +77,7 @@ export class AuthService {
       }
 
       const client = await this.clientService.getClientByName("Admin");
-      const role = await this.roleService.getRoleByName("client");
+      const role = await this.roleService.getRoleByName("Admin");
 
       if (!client) {
         throw new Error("No existe un cliente Admin");
@@ -146,6 +146,7 @@ export class AuthService {
 
       return {
         User: {
+          Id: user.Id,
           Token: token,
           FullName: user.FullName,
           Email: user.Email,

@@ -1,12 +1,15 @@
 import dayjs from "dayjs";
 import { CreateCategoryProductDto } from "../dto/create-product-category.dto";
 import { UpdateProductCategoryDto } from "../dto/update-product-category.dto";
-import { ProductCategory } from "./../model/product-category.model";
+import { ProductCategory } from "../model";
+import { Status } from "../../status/model";
 class ProductCategoryService {
   async createProductCategory(
     productCategoryDto: CreateCategoryProductDto
   ): Promise<ProductCategory> {
     try {
+      console.log(productCategoryDto);
+
       const newProductCategory = await ProductCategory.create({
         Name: productCategoryDto.Name,
         UserId: productCategoryDto.UserId,
@@ -22,7 +25,9 @@ class ProductCategoryService {
 
   async getProductCategories(): Promise<ProductCategory[]> {
     try {
-      const productCategories = await ProductCategory.findAll();
+      const productCategories = await ProductCategory.findAll({
+        include: [{ model: Status, as: "Status" }],
+      });
       return productCategories;
     } catch (error: any) {
       throw new Error("Error getting product categories" + error.message);
@@ -35,6 +40,7 @@ class ProductCategoryService {
         where: {
           Id: id,
         },
+        include: [{ model: Status, as: "Status" }],
       });
       return productCategory;
     } catch (error: any) {

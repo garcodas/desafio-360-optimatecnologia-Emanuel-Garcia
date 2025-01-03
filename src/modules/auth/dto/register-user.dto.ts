@@ -13,8 +13,4 @@ export class RegisterUserDto extends CreateClientDto {
   @IsDateString()
   @IsNotEmpty()
   BirthDate!: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  RoleId!: number;
 }

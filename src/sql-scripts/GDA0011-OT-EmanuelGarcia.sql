@@ -162,7 +162,7 @@ CREATE TABLE [dbo].[ProductCategory](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[ProductCategory]  WITH CHECK ADD  CONSTRAINT [FK_ProductCategory_Status] FOREIGN KEY([UserId])
+ALTER TABLE [dbo].[ProductCategory]  WITH CHECK ADD  CONSTRAINT [FK_ProductCategory_Status] FOREIGN KEY([StatusId])
 REFERENCES [dbo].[Status] ([Id])
 GO
 

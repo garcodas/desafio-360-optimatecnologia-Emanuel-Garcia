@@ -20,7 +20,7 @@ authRouter.post(
 authRouter.post(
   "/signup/admin",
   validateDTO(RegisterUserDto),
-  authController.registerUser.bind(authController)
+  authController.registeAdmin.bind(authController)
 );
 
 //POST /api/auth/signin
