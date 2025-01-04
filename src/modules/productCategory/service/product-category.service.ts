@@ -1,21 +1,37 @@
 import dayjs from "dayjs";
 import { CreateCategoryProductDto } from "../dto/create-product-category.dto";
 import { UpdateProductCategoryDto } from "../dto/update-product-category.dto";
-import { ProductCategory } from "../model";
-import { Status } from "../../status/model";
+import {
+  ProductCategory,
+  ProductCategoryQueryResponse,
+} from "../../../types/ProductCategory";
+import sequelize from "../../../config/database";
+import { QueryTypes } from "sequelize";
+import { InsertType } from "../../../types/InsertType";
+import ProductService from "../../product/service/product.service";
 class ProductCategoryService {
+  private productService = new ProductService();
   async createProductCategory(
     productCategoryDto: CreateCategoryProductDto
   ): Promise<ProductCategory> {
     try {
-      console.log(productCategoryDto);
-
-      const newProductCategory = await ProductCategory.create({
+      const newProductCategory = await sequelize.query<InsertType>(
+        `EXEC InsertProductCategory @Name = :Name , @StatusId = :StatusId , @UserId = :UserId`,
+        {
+          replacements: {
+            Name: productCategoryDto.Name,
+            StatusId: productCategoryDto.StatusId,
+            UserId: productCategoryDto.UserId,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      return {
+        Id: newProductCategory[0].InsertedId,
         Name: productCategoryDto.Name,
-        UserId: productCategoryDto.UserId,
         StatusId: productCategoryDto.StatusId,
-      });
-      return newProductCategory;
+        UserId: productCategoryDto.UserId,
+      };
     } catch (error: any) {
       console.log(error);
 
@@ -25,9 +41,34 @@ class ProductCategoryService {
 
   async getProductCategories(): Promise<ProductCategory[]> {
     try {
-      const productCategories = await ProductCategory.findAll({
-        include: [{ model: Status, as: "Status" }],
-      });
+      const productCategoriesQueryResult =
+        await sequelize.query<ProductCategoryQueryResponse>(
+          `SELECT 
+            PC.Id,
+            PC.Name,
+            PC.StatusId,
+            PC.CreatedAt,
+            S.Id AS StatusId,
+            S.Name AS StatusName, 
+            PC.UserId  FROM [ProductCategory] PC
+          INNER JOIN [Status] S ON PC.StatusId = S.Id`,
+          {
+            type: QueryTypes.SELECT,
+          }
+        );
+
+      const productCategories: ProductCategory[] =
+        productCategoriesQueryResult.map((category) => ({
+          Id: category.Id,
+          Name: category.Name,
+          StatusId: category.StatusId,
+          UserId: category.UserId,
+          Status: {
+            Id: category.StatusId,
+            Name: category.StatusName,
+          },
+        }));
+
       return productCategories;
     } catch (error: any) {
       throw new Error("Error getting product categories" + error.message);
@@ -36,13 +77,16 @@ class ProductCategoryService {
 
   async getProductCategoryById(id: number): Promise<ProductCategory | null> {
     try {
-      const productCategory = await ProductCategory.findOne({
-        where: {
-          Id: id,
-        },
-        include: [{ model: Status, as: "Status" }],
-      });
-      return productCategory;
+      const productCategory = await sequelize.query<ProductCategory>(
+        `SELECT * FROM [ProductCategory] PC
+          INNER JOIN [Status] S ON PC.StatusId = S.Id
+          WHERE PC.Id = :Id`,
+        {
+          replacements: { Id: id },
+          type: QueryTypes.SELECT,
+        }
+      );
+      return productCategory[0];
     } catch (error: any) {
       throw new Error("Error getting product category" + error.message);
     }
@@ -53,16 +97,40 @@ class ProductCategoryService {
     productCategoryDto: UpdateProductCategoryDto
   ): Promise<ProductCategory | null> {
     try {
-      const productCategory = await ProductCategory.findOne({
-        where: { Id: id },
-      });
-      if (productCategory) {
-        productCategory.Name = productCategoryDto.Name ?? productCategory.Name;
-        productCategory.StatusId =
-          productCategoryDto.StatusId ?? productCategory.StatusId;
-        productCategory.ModifiedAt = dayjs().toDate();
-        await productCategory.save();
+      const productCategory = await this.getProductCategoryById(id);
+      if (!productCategory) {
+        throw new Error("Error updating product category");
       }
+
+      await sequelize.query(
+        `EXEC UpdateProductCategory @Id = :Id , @Name = :Name, @UserId = :UserId , @StatusId = :StatusId`,
+        {
+          replacements: {
+            Id: id,
+            Name:
+              productCategoryDto.Name === productCategory.Name
+                ? productCategory.Name
+                : productCategoryDto.Name,
+            StatusId:
+              productCategoryDto.StatusId === productCategory.StatusId
+                ? productCategory.StatusId
+                : productCategoryDto.StatusId,
+            UserId: productCategory.UserId,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      if (productCategoryDto.StatusId !== productCategory.StatusId) {
+        const products = await this.productService.getProductsByCategoryId(id);
+        products.forEach(async (product) => {
+          await this.productService.updateProduct(product.Id ?? 0, {
+            ...product,
+            StatusId: productCategoryDto.StatusId ?? 0,
+          });
+        });
+      }
+
       return productCategory;
     } catch (error: any) {
       throw new Error("Error updating product category" + error.message);
@@ -71,14 +139,18 @@ class ProductCategoryService {
 
   async deleteProductCategory(id: number): Promise<boolean> {
     try {
-      const productCategory = await ProductCategory.findOne({
-        where: { Id: id },
-      });
-      if (productCategory) {
-        await productCategory.destroy();
-        return true;
+      const productCategory = await this.getProductCategoryById(id);
+      if (!productCategory) {
+        throw new Error("Error updating product category");
       }
-      return false;
+
+      await sequelize.query(`EXEC DeleteProductCategory @Id = :Id`, {
+        replacements: {
+          Id: id,
+        },
+        type: QueryTypes.SELECT,
+      });
+      return true;
     } catch (error: any) {
       throw new Error("Error deleting product category" + error.message);
     }

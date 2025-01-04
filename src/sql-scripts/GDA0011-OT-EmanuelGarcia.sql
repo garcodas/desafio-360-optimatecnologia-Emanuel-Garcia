@@ -78,7 +78,7 @@ CREATE TABLE [dbo].[User](
 	[BirthDate] [date] NOT NULL,
 	[RoleId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
-	[ClientId] [int] NOT NULL,
+	[ClientId] [int]  NULL,
 	[CreatedAt] [date] NOT NULL,
 	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
@@ -398,12 +398,13 @@ CREATE PROCEDURE InsertUser
     @Phone VARCHAR(45),
     @BirthDate DATE,
     @RoleId INT,
-    @StatusId INT,
-    @ClientId INT
+    @StatusId INT
 AS
 BEGIN
     INSERT INTO [dbo].[User] ([Email], [FullName], [PasswordHash], [Phone], [BirthDate], [RoleId], [StatusId], [ClientId], [CreatedAt])
-    VALUES (@Email, @FullName, @PasswordHash, @Phone, @BirthDate, @RoleId, @StatusId, @ClientId, GETDATE());
+    VALUES (@Email, @FullName, @PasswordHash, @Phone, @BirthDate, @RoleId, @StatusId, NULL, GETDATE());
+
+	SELECT SCOPE_IDENTITY() AS InsertedId
 END;
 GO
 
@@ -454,6 +455,8 @@ AS
 BEGIN
     INSERT INTO [dbo].[ProductCategory] ([Name], [UserId], [StatusId], [CreatedAt])
     VALUES (@Name, @UserId, @StatusId, GETDATE());
+
+	SELECT SCOPE_IDENTITY() AS InsertedId;
 END;
 GO
 
@@ -483,7 +486,7 @@ GO
 -- --------PRODUCTCATEGORY--------
 -- --------PRODUCT--------
 -- Insert Product
-CREATE PROCEDURE InsertProduct
+ALTER PROCEDURE InsertProduct
     @Name VARCHAR(45),
     @Brand VARCHAR(45),
     @BarCode VARCHAR(45),
@@ -497,6 +500,8 @@ AS
 BEGIN
     INSERT INTO [dbo].[Product] ([Name], [Brand], [BarCode], [Stock], [Price], [ImageUrl], [ProductCategoryId], [UserId], [StatusId], [CreatedAt])
     VALUES (@Name, @Brand, @BarCode, @Stock, @Price, @ImageUrl, @ProductCategoryId, @UserId, @StatusId, GETDATE());
+
+	SELECT SCOPE_IDENTITY() AS InsertedId;
 END;
 GO
 
@@ -639,6 +644,46 @@ END;
 GO
 
 -- --------ORDERDETAIL--------
+
+-- --------USERSESSION--------
+-- Create the stored procedure
+CREATE PROCEDURE [dbo].[InsertUserSession]
+    @Token VARCHAR(MAX),
+    @UserId INT,
+    @ExpiresAt DATE
+AS
+BEGIN
+    -- Insert data into the UserSession table
+    INSERT INTO [dbo].[UserSession] (
+        [Token],
+        [UserId],
+        [ExpiresAt],
+		CreatedAt
+    )
+    VALUES (
+        @Token,
+        @UserId,
+        @ExpiresAt,
+        GETDATE()
+    );
+	 SELECT SCOPE_IDENTITY() AS InsertedId;
+END;
+GO
+
+-- Create the stored procedure
+CREATE PROCEDURE [dbo].[DeleteUserSession]
+    @Token VARCHAR(MAX)
+AS
+BEGIN
+    -- Delete the row(s) where Token matches
+    DELETE FROM [dbo].[UserSession]
+    WHERE [Token] = @Token;
+
+    -- Optionally return the number of rows affected
+    SELECT @@ROWCOUNT AS RowsDeleted;
+END;
+GO
+-- --------USERSESSION--------
 -- --------STORED PROCEDURES--------
 -- --------VIEWS--------
 CREATE VIEW vw_ActiveProductsWithStock AS
@@ -684,7 +729,7 @@ INSERT INTO [dbo].[Role]
            ,[CreatedAt]
            ,[ModifiedAt])
      VALUES
-           ('Admin'
+           ('Administrador'
            ,GETDATE()
            ,NULL)
 GO
@@ -694,7 +739,7 @@ INSERT INTO [dbo].[Role]
            ,[CreatedAt]
            ,[ModifiedAt])
      VALUES
-           ('Client'
+           ('Cliente'
            ,GETDATE()
            ,NULL)
 GO
@@ -709,7 +754,7 @@ INSERT INTO [dbo].[Status]
            ,[CreatedAt]
            ,[ModifiedAt])
      VALUES
-           ('Active'
+           ('Activo'
            ,GETDATE()
            ,NULL)
 GO
@@ -722,7 +767,7 @@ INSERT INTO [dbo].[Status]
            ,[CreatedAt]
            ,[ModifiedAt])
      VALUES
-           ('Inactive'
+           ('Inactivo'
            ,GETDATE()
            ,NULL)
 GO
@@ -731,26 +776,26 @@ GO
 -- --------CLIENT--------
 -- ADMIN CLIENT TO ADMIN USERS
 -- TECHNICAL DEBT: CHANGE RELATIONS, USER SHOULD NOT DEPENDS OF CLIENT (EMANUEL GARCIA)
-USE [GDA0011_OT_Emanuel_Garcia]
-GO
+--USE [GDA0011_OT_Emanuel_Garcia]
+--GO
 
-INSERT INTO [dbo].[Client]
-           ([CompanyName]
-           ,[TradeName]
-           ,[DeliveryAddress]
-           ,[Phone]
-           ,[Email]
-           ,[CreatedAt]
-           ,[ModifiedAt])
-     VALUES
-           ('Admin'
-           ,'Admin'
-           ,'Admin'
-           ,'Admin'
-           ,'admin'
-           ,GETDATE()
-           ,null)
-GO
+--INSERT INTO [dbo].[Client]
+--           ([CompanyName]
+--           ,[TradeName]
+--           ,[DeliveryAddress]
+--           ,[Phone]
+--           ,[Email]
+--           ,[CreatedAt]
+--           ,[ModifiedAt])
+--     VALUES
+--           ('Admin'
+--           ,'Admin'
+--           ,'Admin'
+--           ,'Admin'
+--           ,'admin'
+--           ,GETDATE()
+--           ,null)
+--GO
 -- --------CLIENT--------
 
 -- --------DATA--------

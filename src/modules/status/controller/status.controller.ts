@@ -34,28 +34,4 @@ export class StatusController {
       res.status(400).json({ message: error.message });
     }
   }
-
-  async updateStatus(req: Request, res: Response) {
-    try {
-      const StatusId = req.params.id;
-      const updateStatusDto = req.body;
-      const StatusCategory = await this.StatusService.updateStatus(
-        +StatusId,
-        updateStatusDto
-      );
-      res.status(200).json(StatusCategory);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
-    }
-  }
-
-  async deleteStatus(req: Request, res: Response) {
-    try {
-      const StatusId = req.params.id;
-      await this.StatusService.deleteStatus(+StatusId);
-      res.status(200).json({ message: "Status category deleted" });
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
-    }
-  }
 }

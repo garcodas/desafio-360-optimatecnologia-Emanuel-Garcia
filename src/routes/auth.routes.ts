@@ -16,7 +16,7 @@ authRouter.post(
   authController.registerUser.bind(authController)
 );
 
-//POST /api/auth/signup/admin
+// POST /api/auth/signup/admin
 authRouter.post(
   "/signup/admin",
   validateDTO(RegisterUserDto),
@@ -44,20 +44,20 @@ authRouter.get(
   authController.getUser.bind(authController)
 );
 
-//UPDATE /api/auth
-authRouter.patch(
-  "/:id",
-  passportMiddleware,
-  validateDTO(UpdateUserDto),
-  authController.updateUser.bind(authController)
-);
+// //UPDATE /api/auth
+// authRouter.patch(
+//   "/:id",
+//   passportMiddleware,
+//   validateDTO(UpdateUserDto),
+//   authController.updateUser.bind(authController)
+// );
 
-//DELETE /api/auth/inactive/:id
-//SOFT DELETE USER BY EMANUEL GARCIA
-authRouter.patch(
-  "/inactive/:id",
-  passportMiddleware,
-  authController.deleteUser.bind(authController)
-);
+// //DELETE /api/auth/inactive/:id
+// //SOFT DELETE USER BY EMANUEL GARCIA
+// authRouter.patch(
+//   "/inactive/:id",
+//   passportMiddleware,
+//   authController.deleteUser.bind(authController)
+// );
 
 export default authRouter;

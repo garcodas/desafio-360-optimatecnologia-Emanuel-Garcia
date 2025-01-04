@@ -30,19 +30,4 @@ statusRouter.get(
   productController.getStatusById.bind(productController)
 );
 
-//PUT /api/product/:id
-statusRouter.patch(
-  "/:id",
-  passportMiddleware,
-  validateDTO(UpdateStatusDto),
-  productController.updateStatus.bind(productController)
-);
-
-//DELETE /api/product/:id
-statusRouter.delete(
-  "/:id",
-  passportMiddleware,
-  productController.deleteStatus.bind(productController)
-);
-
 export default statusRouter;

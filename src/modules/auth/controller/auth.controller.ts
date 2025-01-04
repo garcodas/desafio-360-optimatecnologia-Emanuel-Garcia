@@ -6,11 +6,8 @@ export class AuthController {
 
   async registerUser(req: Request, res: Response) {
     try {
-      const user = await this.authService.registerUser(req.body);
-      res.status(201).json({
-        message: "User registered successfully",
-        data: user,
-      });
+      await this.authService.registerUser(req.body);
+      res.status(201).json();
     } catch (error: any) {
       res
         .status(400)
@@ -68,49 +65,49 @@ export class AuthController {
     }
   }
 
-  async updateUser(req: Request, res: Response) {
-    try {
-      const id = req.params.id;
-      const user = await this.authService.updateUser(+id, req.body);
-      res.status(200).json({
-        message: "User updated successfully",
-        data: user,
-      });
-    } catch (error: any) {
-      res
-        .status(400)
-        .json({ message: "Ocurrió un error", error: error.message });
-    }
-  }
+  // async updateUser(req: Request, res: Response) {
+  //   try {
+  //     const id = req.params.id;
+  //     const user = await this.authService.updateUser(+id, req.body);
+  //     res.status(200).json({
+  //       message: "User updated successfully",
+  //       data: user,
+  //     });
+  //   } catch (error: any) {
+  //     res
+  //       .status(400)
+  //       .json({ message: "Ocurrió un error", error: error.message });
+  //   }
+  // }
 
-  async getUserById(req: Request, res: Response) {
-    try {
-      const id = req.params.id;
-      const user = await this.authService.getUserById(+id);
-      res.status(200).json({
-        message: "User fetched successfully",
-        data: user,
-      });
-    } catch (error: any) {
-      res
-        .status(400)
-        .json({ message: "Ocurrió un error", error: error.message });
-    }
-  }
+  // async getUserById(req: Request, res: Response) {
+  //   try {
+  //     const id = req.params.id;
+  //     const user = await this.authService.getUserById(+id);
+  //     res.status(200).json({
+  //       message: "User fetched successfully",
+  //       data: user,
+  //     });
+  //   } catch (error: any) {
+  //     res
+  //       .status(400)
+  //       .json({ message: "Ocurrió un error", error: error.message });
+  //   }
+  // }
 
-  async deleteUser(req: Request, res: Response) {
-    try {
-      const id = req.params.id;
-      await this.authService.deleteUser(+id);
-      res.status(200).json({
-        message: "User deleted successfully",
-      });
-    } catch (error: any) {
-      res
-        .status(400)
-        .json({ message: "Ocurrió un error", error: error.message });
-    }
-  }
+  // async deleteUser(req: Request, res: Response) {
+  //   try {
+  //     const id = req.params.id;
+  //     await this.authService.deleteUser(+id);
+  //     res.status(200).json({
+  //       message: "User deleted successfully",
+  //     });
+  //   } catch (error: any) {
+  //     res
+  //       .status(400)
+  //       .json({ message: "Ocurrió un error", error: error.message });
+  //   }
+  // }
 
   async registeAdmin(req: Request, res: Response) {
     try {

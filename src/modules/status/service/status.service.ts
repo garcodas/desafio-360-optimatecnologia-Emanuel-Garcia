@@ -1,14 +1,26 @@
 import dayjs from "dayjs";
 import { CreateStatusDto } from "../dto/create-status.dto";
 import { UpdateStatusDto } from "../dto/update-status.dto";
-import { Status } from "../model";
+import { Status } from "../../../types/Status";
+import sequelize from "../../../config/database";
+import { QueryTypes } from "sequelize";
+import { InsertType } from "../../../types/InsertType";
 class StatusService {
   async createStatus(StatusDto: CreateStatusDto): Promise<Status> {
     try {
-      const newStatus = await Status.create({
+      const newStatus = await sequelize.query<InsertType>(
+        `EXEC InsertStatus @Name = :Name`,
+        {
+          replacements: {
+            Name: StatusDto.Name,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      return {
+        Id: newStatus[0].InsertedId,
         Name: StatusDto.Name,
-      });
-      return newStatus;
+      };
     } catch (error: any) {
       console.log(error);
 
@@ -18,7 +30,13 @@ class StatusService {
 
   async getStatuses(): Promise<Status[]> {
     try {
-      const StatusCategories = await Status.findAll();
+      const StatusCategories = await sequelize.query<Status>(
+        `SELECT * FROM [Status]`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+
       return StatusCategories;
     } catch (error: any) {
       throw new Error("Error getting Status categories" + error.message);
@@ -27,48 +45,17 @@ class StatusService {
 
   async getStatusById(id: number): Promise<Status | null> {
     try {
-      const status = await Status.findOne({
-        where: {
-          Id: id,
-        },
-      });
-      return status;
+      const StatusCategories = await sequelize.query<Status>(
+        `SELECT * FROM [Status] WHERE Id = :Id`,
+        {
+          replacements: { Id: id },
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      return StatusCategories[0];
     } catch (error: any) {
       throw new Error("Error getting Status category" + error.message);
-    }
-  }
-
-  async updateStatus(
-    id: number,
-    StatusDto: UpdateStatusDto
-  ): Promise<Status | null> {
-    try {
-      const status = await Status.findOne({
-        where: { Id: id },
-      });
-      if (status) {
-        status.Name = StatusDto.Name ?? status.Name;
-        status.ModifiedAt = dayjs().toDate();
-        await status.save();
-      }
-      return status;
-    } catch (error: any) {
-      throw new Error("Error updating Status category" + error.message);
-    }
-  }
-
-  async deleteStatus(id: number): Promise<boolean> {
-    try {
-      const status = await Status.findOne({
-        where: { Id: id },
-      });
-      if (status) {
-        await status.destroy();
-        return true;
-      }
-      return false;
-    } catch (error: any) {
-      throw new Error("Error deleting Status category" + error.message);
     }
   }
 }

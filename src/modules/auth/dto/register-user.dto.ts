@@ -1,16 +1,29 @@
-import { IsDateString, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { CreateClientDto } from "../../client/dto/create-client.dto";
+import {
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from "class-validator";
 
-export class RegisterUserDto extends CreateClientDto {
+export class RegisterUserDto {
+  @IsEmail()
+  @IsNotEmpty()
+  Email!: string;
+
   @IsString()
   @IsNotEmpty()
   FullName!: string;
 
   @IsString()
   @IsNotEmpty()
-  Password!: string;
+  Phone!: string;
 
   @IsDateString()
   @IsNotEmpty()
   BirthDate!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  Password!: string;
 }
