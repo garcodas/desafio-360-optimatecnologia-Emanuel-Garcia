@@ -17,7 +17,7 @@ class ProductService {
         @Price = :Price,
         @ImageUrl = :ImageUrl,
         @StatusId = :StatusId,
-        @UserId = :UserId
+        @UserId = :UserId,
         @ProductCategoryId = :ProductCategoryId`,
         {
           replacements: {
@@ -29,7 +29,7 @@ class ProductService {
             ImageUrl: ProductDto.ImageUrl,
             StatusId: ProductDto.StatusId,
             UserId: ProductDto.UserId,
-            ProductCategoryId: ProductDto,
+            ProductCategoryId: ProductDto.ProductCategoryId,
           },
           type: QueryTypes.SELECT,
         }
@@ -50,7 +50,7 @@ class ProductService {
     } catch (error: any) {
       console.log(error);
 
-      throw new Error("Error saving product category" + error.message);
+      throw new Error("Error saving product" + error.message);
     }
   }
 

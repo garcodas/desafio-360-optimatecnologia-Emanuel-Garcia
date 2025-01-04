@@ -6,13 +6,15 @@ import statusRouter from "./status.route";
 import clientRouter from "./client.route";
 import orderRouter from "./order.route";
 import roleRouter from "./role.route";
+import uploadRouter from "./upload.route";
 
 const mainRouter = Router();
 
 mainRouter.use("/auth", authRouter);
 mainRouter.use("/product-category", categoryProductRouter);
-// mainRouter.use("/product", productRouter);
+mainRouter.use("/product", productRouter);
 mainRouter.use("/status", statusRouter);
+mainRouter.use("/uploads", uploadRouter);
 // mainRouter.use("/client", clientRouter);
 // mainRouter.use("/order", orderRouter);
 // mainRouter.use("/role", roleRouter);

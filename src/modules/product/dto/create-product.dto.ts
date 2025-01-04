@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString, IsUrl } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateProductDto {
   @IsString()
@@ -21,7 +21,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   Price!: number;
 
-  @IsUrl()
+  @IsString()
   @IsNotEmpty()
   ImageUrl!: string;
 
@@ -31,9 +31,9 @@ export class CreateProductDto {
 
   @IsInt()
   @IsNotEmpty()
-  UserId!: number;
+  StatusId!: number;
 
   @IsInt()
   @IsNotEmpty()
-  StatusId!: number;
+  UserId!: number;
 }
