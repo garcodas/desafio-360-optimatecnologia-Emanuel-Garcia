@@ -11,7 +11,7 @@ export class UpdateProductDto {
 
   @IsString()
   @IsOptional()
-  Barcode!: string;
+  BarCode!: string;
 
   @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 2 })
   @IsOptional()

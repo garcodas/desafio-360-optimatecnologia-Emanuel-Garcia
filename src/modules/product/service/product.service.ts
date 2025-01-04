@@ -39,7 +39,7 @@ class ProductService {
         Id: newProduct[0].InsertedId,
         Name: ProductDto.Name,
         Brand: ProductDto.Brand,
-        Barcode: ProductDto.Barcode,
+        BarCode: ProductDto.Barcode,
         Stock: ProductDto.Stock,
         Price: ProductDto.Price,
         ImageUrl: ProductDto.ImageUrl,
@@ -116,12 +116,12 @@ class ProductService {
         @Id = :Id,
         @Name = :Name,
         @Brand = :Brand,
-        @Barcode = :Barcode,
+        @BarCode = :BarCode,
         @Stock = :Stock,
         @Price = :Price,
         @ImageUrl = :ImageUrl,
         @StatusId = :StatusId,
-        @UserId = :UserId
+        @UserId = :UserId,
         @ProductCategoryId = :ProductCategoryId`,
         {
           replacements: {
@@ -132,10 +132,10 @@ class ProductService {
               product.Brand === ProductDto.Brand
                 ? product.Brand
                 : ProductDto.Brand,
-            Barcode:
-              product.Barcode === ProductDto.Barcode
-                ? product.Barcode
-                : ProductDto.Barcode,
+            BarCode:
+              product.BarCode === ProductDto.BarCode
+                ? product.BarCode
+                : ProductDto.BarCode,
             Stock:
               product.Stock === ProductDto.Stock
                 ? product.Stock
@@ -152,6 +152,7 @@ class ProductService {
               product.StatusId === ProductDto.StatusId
                 ? product.StatusId
                 : ProductDto.StatusId,
+            UserId: product.UserId,
             ProductCategoryId:
               product.ProductCategoryId === ProductDto.ProductCategoryId
                 ? product.ProductCategoryId
@@ -162,7 +163,7 @@ class ProductService {
       );
       return product;
     } catch (error: any) {
-      throw new Error("Error updating product category" + error.message);
+      throw new Error("Error updating product" + error.message);
     }
   }
 

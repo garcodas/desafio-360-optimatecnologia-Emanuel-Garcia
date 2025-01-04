@@ -3,7 +3,7 @@ import { BaseType } from "./BaseType";
 interface Product extends BaseType {
   Name: string;
   Brand: string;
-  Barcode: string;
+  BarCode: string;
   Stock: number;
   Price: number;
   ImageUrl: string;
