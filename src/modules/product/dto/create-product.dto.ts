@@ -11,7 +11,7 @@ export class CreateProductDto {
 
   @IsString()
   @IsNotEmpty()
-  Barcode!: string;
+  BarCode!: string;
 
   @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 2 })
   @IsNotEmpty()

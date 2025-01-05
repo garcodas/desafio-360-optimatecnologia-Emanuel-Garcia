@@ -1,13 +1,19 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class UpdateClientDto {
   @IsString()
   @IsOptional()
-  CompanyName?: string | null;
+  CompanyName?: string;
 
   @IsString()
   @IsOptional()
-  TradeName?: string | null;
+  TradeName?: string;
 
   @IsString()
   @IsOptional()
@@ -20,4 +26,8 @@ export class UpdateClientDto {
   @IsEmail()
   @IsOptional()
   Email?: string;
+
+  @IsNumber()
+  @IsOptional()
+  StatusId?: number;
 }

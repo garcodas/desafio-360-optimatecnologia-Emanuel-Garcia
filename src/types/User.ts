@@ -1,14 +1,22 @@
 import { BaseType } from "./BaseType";
+import { Role } from "./Role";
+import { Status } from "./Status";
 
 interface User extends BaseType {
   Email: string;
   FullName: string;
   Phone: string;
   BirthDate: Date;
-  PasswordHash: string;
+  PasswordHash?: string;
   RoleId: number;
   StatusId: number;
-  ClientId?: number;
+  Status?: Status;
+  Role?: Role;
 }
 
-export type { User };
+interface UserQueryResponse extends User {
+  StatusName: string;
+  RoleName: string;
+}
+
+export type { User, UserQueryResponse };

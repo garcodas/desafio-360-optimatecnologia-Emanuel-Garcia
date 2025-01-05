@@ -135,7 +135,7 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       const user = await sequelize.query<User>(
-        "SELECT * FROM [User] WHERE Email = :Email",
+        "SELECT * FROM [User] WHERE Email = :Email AND StatusId = 1",
         {
           replacements: {
             Email: email,
@@ -148,7 +148,10 @@ export class AuthService {
         throw new Error("Usuario o contraseña incorrectos");
       }
 
-      const isValid = await bcrypt.compare(password, user[0].PasswordHash);
+      const isValid = await bcrypt.compare(
+        password,
+        user[0].PasswordHash ?? ""
+      );
       if (!isValid) {
         throw new Error("Usuario o contraseña incorrectos");
       }

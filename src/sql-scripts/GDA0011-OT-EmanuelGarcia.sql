@@ -3,30 +3,6 @@ CREATE DATABASE GDA0011_OT_Emanuel_Garcia
 GO
 -- --------CREATE DATABASE--------
 
--- --------CLIENT TABLE--------
-USE [GDA0011_OT_Emanuel_Garcia]
-GO
-
-/****** Object:  Table [dbo].[Client]    Script Date: 12/4/2024 10:46:40 PM ******/
-
-CREATE TABLE [dbo].[Client](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CompanyName] [varchar](245) NULL,
-	[TradeName] [varchar](245) NULL,
-	[DeliveryAddress] [varchar](345) NOT NULL,
-	[Phone] [varchar](45) NOT NULL,
-	[Email] [varchar](45) NOT NULL,
-	[CreatedAt] [date] NOT NULL,
-	[ModifiedAt] [date] NULL ,
- CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
--- --------CLIENT TABLE--------
-
-
 -- --------ROL TABLE--------
 USE [GDA0011_OT_Emanuel_Garcia]
 GO
@@ -78,7 +54,6 @@ CREATE TABLE [dbo].[User](
 	[BirthDate] [date] NOT NULL,
 	[RoleId] [int] NOT NULL,
 	[StatusId] [int] NOT NULL,
-	[ClientId] [int]  NULL,
 	[CreatedAt] [date] NOT NULL,
 	[ModifiedAt] [date] NULL,
  CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
@@ -86,13 +61,6 @@ CREATE TABLE [dbo].[User](
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Client] FOREIGN KEY([ClientId])
-REFERENCES [dbo].[Client] ([Id])
-GO
-
-ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Client]
 GO
 
 ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Role] FOREIGN KEY([RoleId])
@@ -109,6 +77,39 @@ GO
 ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Status]
 GO
 -- --------USER TABLE--------
+-- --------CLIENT TABLE--------
+USE [GDA0011_OT_Emanuel_Garcia]
+GO
+
+/****** Object:  Table [dbo].[Client]    Script Date: 12/4/2024 10:46:40 PM ******/
+
+CREATE TABLE [dbo].[Client](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CompanyName] [varchar](245) NULL,
+	[TradeName] [varchar](245) NULL,
+	[DeliveryAddress] [varchar](345) NOT NULL,
+	[Phone] [varchar](45) NOT NULL,
+	[Email] [varchar](45) NOT NULL,
+	[CreatedAt] [date] NOT NULL,
+	[ModifiedAt] [date] NULL,
+	[UserId] [int] NOT NULL,
+	[StatusId] [int] NOT NULL,
+ CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Client]  WITH CHECK ADD  CONSTRAINT [FK_Client_Status] FOREIGN KEY([StatusId])
+REFERENCES [dbo].[Status] ([Id])
+GO
+
+ALTER TABLE [dbo].[Client] CHECK CONSTRAINT [FK_Client_Status]
+GO
+
+
+-- --------CLIENT TABLE--------
 -- --------USER SESSION--------
 USE [GDA0011_OT_Emanuel_Garcia]
 GO
@@ -284,11 +285,15 @@ CREATE PROCEDURE InsertClient
     @TradeName VARCHAR(245) = NULL,
     @DeliveryAddress VARCHAR(345),
     @Phone VARCHAR(45),
-    @Email VARCHAR(45)
+    @Email VARCHAR(45),
+	@UserId INT,
+	@StatusId INT
 AS
 BEGIN
-    INSERT INTO [dbo].[Client] ([CompanyName], [TradeName], [DeliveryAddress], [Phone], [Email], [CreatedAt])
-    VALUES (@CompanyName, @TradeName, @DeliveryAddress, @Phone, @Email, GETDATE());
+    INSERT INTO [dbo].[Client] ([CompanyName], [TradeName], [DeliveryAddress], [Phone], [Email], [CreatedAt], [StatusId], [UserId])
+    VALUES (@CompanyName, @TradeName, @DeliveryAddress, @Phone, @Email, GETDATE(), @StatusId, @UserId);
+
+	SELECT SCOPE_IDENTITY() AS InsertedId
 END;
 GO
 
@@ -299,7 +304,8 @@ CREATE PROCEDURE UpdateClient
     @TradeName VARCHAR(245) = NULL,
     @DeliveryAddress VARCHAR(345),
     @Phone VARCHAR(45),
-    @Email VARCHAR(45)
+    @Email VARCHAR(45),
+	@StatusId INT
 AS
 BEGIN
     UPDATE [dbo].[Client]
@@ -308,6 +314,7 @@ BEGIN
         [DeliveryAddress] = @DeliveryAddress, 
         [Phone] = @Phone, 
         [Email] = @Email, 
+		[StatusId] = @StatusId,
         [ModifiedAt] = GETDATE()
     WHERE [Id] = @Id;
 END;
@@ -401,8 +408,8 @@ CREATE PROCEDURE InsertUser
     @StatusId INT
 AS
 BEGIN
-    INSERT INTO [dbo].[User] ([Email], [FullName], [PasswordHash], [Phone], [BirthDate], [RoleId], [StatusId], [ClientId], [CreatedAt])
-    VALUES (@Email, @FullName, @PasswordHash, @Phone, @BirthDate, @RoleId, @StatusId, NULL, GETDATE());
+    INSERT INTO [dbo].[User] ([Email], [FullName], [PasswordHash], [Phone], [BirthDate], [RoleId], [StatusId], [CreatedAt])
+    VALUES (@Email, @FullName, @PasswordHash, @Phone, @BirthDate, @RoleId, @StatusId, GETDATE());
 
 	SELECT SCOPE_IDENTITY() AS InsertedId
 END;
@@ -413,23 +420,19 @@ CREATE PROCEDURE UpdateUser
     @Id INT,
     @Email VARCHAR(45),
     @FullName VARCHAR(250),
-    @PasswordHash VARCHAR(MAX),
     @Phone VARCHAR(45),
     @BirthDate DATE,
     @RoleId INT,
-    @StatusId INT,
-    @ClientId INT
+    @StatusId INT
 AS
 BEGIN
     UPDATE [dbo].[User]
     SET [Email] = @Email,
         [FullName] = @FullName,
-        [PasswordHash] = @PasswordHash,
         [Phone] = @Phone,
         [BirthDate] = @BirthDate,
         [RoleId] = @RoleId,
         [StatusId] = @StatusId,
-        [ClientId] = @ClientId,
         [ModifiedAt] = GETDATE()
     WHERE [Id] = @Id;
 END;
@@ -486,7 +489,7 @@ GO
 -- --------PRODUCTCATEGORY--------
 -- --------PRODUCT--------
 -- Insert Product
-ALTER PROCEDURE InsertProduct
+CREATE PROCEDURE InsertProduct
     @Name VARCHAR(45),
     @Brand VARCHAR(45),
     @BarCode VARCHAR(45),
@@ -702,7 +705,7 @@ SELECT TOP 10
     C.[CompanyName],
     SUM(O.[Total]) AS TotalOrderConsumption
 FROM [dbo].[Client] C
-JOIN [dbo].[User] U ON C.[Id] = U.[ClientId]
+JOIN [dbo].[User] U ON C.[UserId] = U.[Id]
 JOIN [dbo].[Order] O ON U.[Id] = O.[UserId]
 GROUP BY C.[Id], C.[CompanyName]
 ORDER BY TotalOrderConsumption DESC;
@@ -775,7 +778,7 @@ GO
 -- --------STATUS--------
 -- --------CLIENT--------
 -- ADMIN CLIENT TO ADMIN USERS
--- TECHNICAL DEBT: CHANGE RELATIONS, USER SHOULD NOT DEPENDS OF CLIENT (EMANUEL GARCIA)
+-- TECHNICAL DEBT: CHANGE RELATIONS, USER SHOULD NOT DEPENDS OF CLIENT (EMANUEL GARCIA) (DONE)
 --USE [GDA0011_OT_Emanuel_Garcia]
 --GO
 

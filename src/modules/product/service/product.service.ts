@@ -4,7 +4,7 @@ import { UpdateProductDto } from "../dto/update-product.dto";
 import sequelize from "../../../config/database";
 import { InsertType } from "../../../types/InsertType";
 import { QueryTypes } from "sequelize";
-import { Product } from "../../../types/Product";
+import { Product, ProductQueryResponse } from "../../../types/Product";
 class ProductService {
   async createProduct(ProductDto: CreateProductDto): Promise<Product> {
     try {
@@ -12,7 +12,7 @@ class ProductService {
         `EXEC InsertProduct
         @Name = :Name,
         @Brand = :Brand,
-        @Barcode = :Barcode,
+        @BarCode = :BarCode,
         @Stock = :Stock,
         @Price = :Price,
         @ImageUrl = :ImageUrl,
@@ -23,7 +23,7 @@ class ProductService {
           replacements: {
             Name: ProductDto.Name,
             Brand: ProductDto.Brand,
-            Barcode: ProductDto.Barcode,
+            BarCode: ProductDto.BarCode,
             Stock: ProductDto.Stock,
             Price: ProductDto.Price,
             ImageUrl: ProductDto.ImageUrl,
@@ -39,7 +39,7 @@ class ProductService {
         Id: newProduct[0].InsertedId,
         Name: ProductDto.Name,
         Brand: ProductDto.Brand,
-        BarCode: ProductDto.Barcode,
+        BarCode: ProductDto.BarCode,
         Stock: ProductDto.Stock,
         Price: ProductDto.Price,
         ImageUrl: ProductDto.ImageUrl,
@@ -56,14 +56,45 @@ class ProductService {
 
   async getProducts(): Promise<Product[]> {
     try {
-      const productCategories = await sequelize.query<Product>(
-        `SELECT * FROM Product`,
+      const productsQueryResult = await sequelize.query<ProductQueryResponse>(
+        `SELECT P.*,
+          S.Id AS StatusId, 
+          S.Name AS StatusName, 
+          PC.Id AS ProductCategoryId, 
+          PC.Name AS ProductCategoryName,
+          PC.StatusId AS ProductCategoryStatusId,
+          PC.UserId AS ProductCategoryUserId 
+            FROM [Product] P 
+		      INNER JOIN [Status] S ON S.Id = P.StatusId
+		      INNER JOIN [ProductCategory] PC ON PC.Id = P.ProductCategoryId`,
         {
           type: QueryTypes.SELECT,
         }
       );
 
-      return productCategories;
+      const products: Product[] = productsQueryResult.map((product) => ({
+        Id: product.Id,
+        Name: product.Name,
+        Brand: product.Name,
+        BarCode: product.BarCode,
+        Stock: product.Stock,
+        Price: product.Price,
+        ImageUrl: product.ImageUrl,
+        StatusId: product.StatusId,
+        ProductCategoryId: product.ProductCategoryId,
+        UserId: product.UserId,
+        Status: {
+          Id: product.StatusId,
+          Name: product.StatusName,
+        },
+        ProductCategory: {
+          Id: product.ProductCategoryId,
+          Name: product.ProductCategoryName,
+          StatusId: product.ProductCategoryStatusId,
+          UserId: product.ProductCategoryUserId,
+        },
+      }));
+      return products;
     } catch (error: any) {
       throw new Error("Error getting product categories" + error.message);
     }

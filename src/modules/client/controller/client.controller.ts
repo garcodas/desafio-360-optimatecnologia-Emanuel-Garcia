@@ -33,6 +33,16 @@ export class ClientController {
     }
   }
 
+  async getClientByUserId(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const client = await this.clientService.getClientByUserId(+userId);
+      res.status(200).json(client);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
   async updateClient(req: Request, res: Response) {
     try {
       const clientId = req.params.id;
@@ -47,13 +57,18 @@ export class ClientController {
     }
   }
 
-  async deleteClient(req: Request, res: Response) {
+  async changeStatusClient(req: Request, res: Response) {
     try {
-      const clientId = req.params.id;
-      await this.clientService.deleteClient(+clientId);
-      res.status(200).json({ message: "Client deleted" });
+      const clientId = req.params.clientId;
+      const statusId = req.params.statusId;
+
+      await this.clientService.changeStatusClient(+clientId, +statusId);
+
+      res.status(200).json();
     } catch (error: any) {
-      res.status(400).json({ message: error.message });
+      res
+        .status(400)
+        .json({ message: "Ocurrió un error", error: error.message });
     }
   }
 }

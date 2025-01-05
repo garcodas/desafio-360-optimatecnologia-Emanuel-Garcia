@@ -30,6 +30,12 @@ clientRouter.get(
   clientController.getClientById.bind(clientController)
 );
 
+clientRouter.get(
+  "/byUserId/:userId",
+  passportMiddleware,
+  clientController.getClientByUserId.bind(clientController)
+);
+
 //PUT /api/client/:id
 clientRouter.patch(
   "/:id",
@@ -38,11 +44,10 @@ clientRouter.patch(
   clientController.updateClient.bind(clientController)
 );
 
-//DELETE /api/client/:id
-clientRouter.delete(
-  "/:id",
+clientRouter.put(
+  "/:clientId/:statusId",
   passportMiddleware,
-  clientController.deleteClient.bind(clientController)
+  clientController.changeStatusClient.bind(clientController)
 );
 
 export default clientRouter;
