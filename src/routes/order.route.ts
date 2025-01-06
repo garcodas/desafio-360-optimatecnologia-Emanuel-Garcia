@@ -30,19 +30,11 @@ orderRouter.get(
   orderController.getOrderById.bind(orderController)
 );
 
-//PUT /api/order/:id
-orderRouter.patch(
-  "/:id",
+//GET /api/order/byUserId/:id
+orderRouter.get(
+  "/byUserId/:userId",
   passportMiddleware,
-  validateDTO(UpdateOrderDto),
-  orderController.updateOrder.bind(orderController)
-);
-
-//DELETE /api/order/:id
-orderRouter.delete(
-  "/:id",
-  passportMiddleware,
-  orderController.deleteOrder.bind(orderController)
+  orderController.getOrderByUserId.bind(orderController)
 );
 
 export default orderRouter;

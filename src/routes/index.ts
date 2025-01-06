@@ -18,7 +18,7 @@ mainRouter.use("/status", statusRouter);
 mainRouter.use("/uploads", uploadRouter);
 mainRouter.use("/user", userRouter);
 mainRouter.use("/client", clientRouter);
-// mainRouter.use("/order", orderRouter);
+mainRouter.use("/order", orderRouter);
 // mainRouter.use("/role", roleRouter);
 
 export default mainRouter;

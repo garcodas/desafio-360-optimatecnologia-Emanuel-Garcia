@@ -6,6 +6,7 @@ import {
   IsEmail,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsString,
   ValidateNested,
 } from "class-validator";
@@ -14,11 +15,11 @@ import { CreateOrderDetailDto } from "./create-order-detail";
 export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
-  FullName?: string;
+  FullName!: string;
 
   @IsString()
   @IsNotEmpty()
-  Address?: string;
+  Address!: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -32,9 +33,9 @@ export class CreateOrderDto {
   @IsNotEmpty()
   UserId!: number;
 
-  @IsInt()
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 2 })
   @IsNotEmpty()
-  StatusId!: number;
+  Total!: number;
 
   @IsArray()
   @ValidateNested({ each: true })

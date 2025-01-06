@@ -33,25 +33,11 @@ export class OrderController {
     }
   }
 
-  async updateOrder(req: Request, res: Response) {
+  async getOrderByUserId(req: Request, res: Response) {
     try {
-      const orderId = req.params.id;
-      const updateOrderDto = req.body;
-      const order = await this.orderService.updateOrder(
-        +orderId,
-        updateOrderDto
-      );
+      const userId = req.params.userId;
+      const order = await this.orderService.getOrderByUserId(+userId);
       res.status(200).json(order);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
-    }
-  }
-
-  async deleteOrder(req: Request, res: Response) {
-    try {
-      const orderId = req.params.id;
-      await this.orderService.deleteOrder(+orderId);
-      res.status(200).json({ message: "Order deleted" });
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

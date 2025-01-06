@@ -562,6 +562,8 @@ AS
 BEGIN
     INSERT INTO [dbo].[Order] ([FullName], [Address], [Phone], [Email], [DeliveryDate], [Total], [UserId], [StatusId], [CreatedAt])
     VALUES (@FullName, @Address, @Phone, @Email, @DeliveryDate, @Total, @UserId, @StatusId, GETDATE());
+
+	SELECT SCOPE_IDENTITY() AS InsertedId;
 END;
 GO
 
@@ -614,6 +616,8 @@ AS
 BEGIN
     INSERT INTO [dbo].[OrderDetail] ([Qty], [UnitPrice], [SubTotal], [OrderId], [ProductId])
     VALUES (@Qty, @UnitPrice, @SubTotal, @OrderId, @ProductId);
+
+	SELECT SCOPE_IDENTITY() AS InsertedId;
 END;
 GO
 

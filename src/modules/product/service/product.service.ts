@@ -100,6 +100,53 @@ class ProductService {
     }
   }
 
+  async getProductsStore(): Promise<Product[]> {
+    try {
+      const productsQueryResult = await sequelize.query<ProductQueryResponse>(
+        `SELECT P.*,
+          S.Id AS StatusId, 
+          S.Name AS StatusName, 
+          PC.Id AS ProductCategoryId, 
+          PC.Name AS ProductCategoryName,
+          PC.StatusId AS ProductCategoryStatusId,
+          PC.UserId AS ProductCategoryUserId 
+            FROM [Product] P 
+		      INNER JOIN [Status] S ON S.Id = P.StatusId
+		      INNER JOIN [ProductCategory] PC ON PC.Id = P.ProductCategoryId
+          WHERE P.StatusId = 1`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      const products: Product[] = productsQueryResult.map((product) => ({
+        Id: product.Id,
+        Name: product.Name,
+        Brand: product.Name,
+        BarCode: product.BarCode,
+        Stock: product.Stock,
+        Price: product.Price,
+        ImageUrl: product.ImageUrl,
+        StatusId: product.StatusId,
+        ProductCategoryId: product.ProductCategoryId,
+        UserId: product.UserId,
+        Status: {
+          Id: product.StatusId,
+          Name: product.StatusName,
+        },
+        ProductCategory: {
+          Id: product.ProductCategoryId,
+          Name: product.ProductCategoryName,
+          StatusId: product.ProductCategoryStatusId,
+          UserId: product.ProductCategoryUserId,
+        },
+      }));
+      return products;
+    } catch (error: any) {
+      throw new Error("Error getting product categories" + error.message);
+    }
+  }
+
   async getProductsByCategoryId(id: number): Promise<Product[]> {
     try {
       const productCategories = await sequelize.query<Product>(

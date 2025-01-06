@@ -23,6 +23,13 @@ productRouter.get(
   productController.getProducts.bind(productController)
 );
 
+//GET /api/product/store
+productRouter.get(
+  "/store",
+  passportMiddleware,
+  productController.getProductsStore.bind(productController)
+);
+
 //GET /api/product/:id
 productRouter.get(
   "/:id",
