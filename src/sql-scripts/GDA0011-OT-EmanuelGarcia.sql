@@ -617,6 +617,15 @@ BEGIN
     INSERT INTO [dbo].[OrderDetail] ([Qty], [UnitPrice], [SubTotal], [OrderId], [ProductId])
     VALUES (@Qty, @UnitPrice, @SubTotal, @OrderId, @ProductId);
 
+	DECLARE @Actual AS  FLOAT
+
+	SELECT @Actual = Stock FROM [Product] WHERE Id = @ProductId
+
+	UPDATE [Product] 
+	SET
+		Stock = @Actual - @Qty
+	WHERE Id = @ProductId
+
 	SELECT SCOPE_IDENTITY() AS InsertedId;
 END;
 GO
